@@ -16,6 +16,65 @@
 
 <script  src="./script.js">
   //Your code goes here
+	// Get the necessary elements
+const player = document.querySelector('.player');
+const video = player.querySelector('video');
+const playButton = player.querySelector('.toggle');
+const progress = player.querySelector('.progress');
+const progressBar = player.querySelector('.progress__filled');
+const volumeSlider = player.querySelector('input[name="volume"]');
+const playbackSpeedSlider = player.querySelector('input[name="playbackRate"]');
+const skipButtons = player.querySelectorAll('[data-skip]');
+
+// Function to toggle play/pause
+function togglePlay() {
+  if (video.paused) {
+    video.play();
+  } else {
+    video.pause();
+  }
+}
+
+// Event listener for play button click
+playButton.addEventListener('click', togglePlay);
+
+// Update play button icon based on play/pause state
+video.addEventListener('play', () => {
+  playButton.textContent = '❚ ❚';
+});
+
+video.addEventListener('pause', () => {
+  playButton.textContent = '►';
+});
+
+// Function to update progress bar
+function updateProgressBar() {
+  const percent = (video.currentTime / video.duration) * 100;
+  progressBar.style.flexBasis = `${percent}%`;
+}
+
+// Event listener for timeupdate event to update progress
+video.addEventListener('timeupdate', updateProgressBar);
+
+// Function to handle skip buttons
+function skip() {
+  video.currentTime += parseFloat(this.dataset.skip);
+}
+
+// Event listener for skip buttons click
+skipButtons.forEach(button => {
+  button.addEventListener('click', skip);
+});
+
+// Function to update volume and playback speed
+function handleSliderUpdate() {
+  video[this.name] = this.value;
+}
+
+// Event listeners for volume and playback speed sliders change
+volumeSlider.addEventListener('change', handleSliderUpdate);
+playbackSpeedSlider.addEventListener('change', handleSliderUpdate);
+
 </script>
 </body>
 </html>
